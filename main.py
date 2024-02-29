@@ -18,7 +18,7 @@ class Game:
         # the dimensions of the screen
         self.screen = pg.display.set_mode((WIDTH, HEIGHT))
         # the title of the game
-        pg.display.set_caption("My First Video Game")
+        pg.display.set_caption("WALUIGI TIME")
         # we'll work with this later
         self.clock = pg.time.Clock()
         pg.key.set_repeat(500, 100)
