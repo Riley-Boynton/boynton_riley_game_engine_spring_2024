@@ -2,6 +2,14 @@
 # Riley's's edits will appear shortly...
 # Riley is the best
 
+'''
+goals, rules, feedback, freedom, what the verb, and will it form a sentence
+
+enemies that collide with other sprites
+same-computer multiplayer
+shooting lazers
+'''
+
 # all the things from the other files
 import pygame as pg
 from settings import *
@@ -54,6 +62,8 @@ class Game:
                     Wall(self, col, row)
                 if tile == 'p':
                     self.player = Player(self, col, row)
+                if tile == 'P':
+                    self.player = Player2(self, col, row)
                     # puts the player on a specific point on the screen
                 if tile == 'e':
                     print("an enemy at", row, col)
