@@ -38,6 +38,10 @@ class Game:
         img_folder = path.join(game_folder, 'images')
         self.player_img = pg.image.load(path.join(img_folder, 'link.png')).convert_alpha()
         self.map_data = []
+        self.player_img2 = pg.image.load(path.join(img_folder, 'mario.png')).convert_alpha()
+        self.map_data = []
+        self.coin_img = pg.image.load(path.join(img_folder, 'zeldacoin.png')).convert_alpha()
+        self.map_data = []
         #  I moved link.png to the right place
     
         '''
@@ -65,6 +69,7 @@ class Game:
     def new(self):
         self.all_sprites = pg.sprite.Group()
         self.walls = pg.sprite.Group()
+        self.coins = pg.sprite.Group()
         # self.player = Player(self, 10, 10)
         # self.all_sprites.add(self.player)
         # for x in range(10, 20):
@@ -84,6 +89,9 @@ class Game:
                 if tile == 'e':
                     print("an enemy at", row, col)
                     Enemy(self, col, row)
+                if tile == 'c':
+                    print("a coin at", row, col)
+                    Coin(self, col, row)    
     def run(self):
         # how to run the game
         self.playing = True
