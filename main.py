@@ -26,7 +26,7 @@ class Game:
         # the dimensions of the screen
         self.screen = pg.display.set_mode((WIDTH, HEIGHT))
         # the title of the game
-        pg.display.set_caption("WALUIGI TIME")
+        pg.display.set_caption("Mario Vs Link")
         # we'll work with this later
         self.clock = pg.time.Clock()
         pg.key.set_repeat(500, 100)
@@ -41,6 +41,8 @@ class Game:
         self.player_img2 = pg.image.load(path.join(img_folder, 'mario.png')).convert_alpha()
         self.map_data = []
         self.coin_img = pg.image.load(path.join(img_folder, 'zeldacoin.png')).convert_alpha()
+        self.map_data = []
+        self.coin_img2 = pg.image.load(path.join(img_folder, 'mariocoin.png')).convert_alpha()
         self.map_data = []
         #  I moved link.png to the right place
     
@@ -81,6 +83,9 @@ class Game:
                 if tile == '1':
                     print("a wall at", row, col)
                     Wall(self, col, row)
+                if tile == '2':
+                    print("an alternate wall at", row, col)
+                    Wall2(self, col, row)
                 if tile == 'p':
                     self.player = Player(self, col, row)
                 if tile == 'P':
@@ -90,8 +95,11 @@ class Game:
                     print("an enemy at", row, col)
                     Enemy(self, col, row)
                 if tile == 'c':
-                    print("a coin at", row, col)
+                    print("a zelda coin at", row, col)
                     Coin(self, col, row)    
+                if tile == 'C':
+                    print("a mario coin at", row, col)
+                    Coin2(self, col, row)    
     def run(self):
         # how to run the game
         self.playing = True

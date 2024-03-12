@@ -325,7 +325,22 @@ class Coin(pg.sprite.Sprite):
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
         self.image = pg.Surface((TILESIZE, TILESIZE))
-        self.image.fill(GOLD)
+        self.image = game.coin_img
+        # self.image.fill(GOLD)
+        self.rect = self.image.get_rect()
+        self.x = x
+        self.y = y
+        self.rect.x = x * TILESIZE
+        self.rect.y = y * TILESIZE
+
+class Coin2(pg.sprite.Sprite):
+    def __init__(self, game, x, y):
+        self.groups = game.all_sprites, game.coins
+        pg.sprite.Sprite.__init__(self, self.groups)
+        self.game = game
+        self.image = pg.Surface((TILESIZE, TILESIZE))
+        self.image = game.coin_img2
+        # self.image.fill(GOLD)
         self.rect = self.image.get_rect()
         self.x = x
         self.y = y
@@ -339,7 +354,7 @@ class Wall2(pg.sprite.Sprite):
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
         self.image = pg.Surface((TILESIZE, TILESIZE))
-        self.image.fill(BGCOLOR)
+        self.image.fill(RED)
         self.rect = self.image.get_rect()
         self.x = x
         self.y = y
