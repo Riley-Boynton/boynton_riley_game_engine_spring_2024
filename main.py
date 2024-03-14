@@ -94,7 +94,7 @@ class Game:
                 if tile == 'p':
                     self.player = Player(self, col, row)
                 if tile == 'P':
-                    self.player = Player2(self, col, row)
+                    self.player2 = Player2(self, col, row)
                     # puts the player on a specific point on the screen
                 if tile == 'e':
                     print("an enemy at", row, col)
@@ -144,6 +144,8 @@ class Game:
         self.screen.fill(BGCOLOR)
         self.draw_grid()
         self.all_sprites.draw(self.screen)
+        self.draw_text(self.screen, str(self.player.moneybag), 64, YELLOW, WIDTH/2 + 300, 100)
+        self.draw_text(self.screen, str(self.player2.moneybag), 64, RED, WIDTH/2 + -250, 100)
         pg.display.flip()
 
     def events(self):
