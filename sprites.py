@@ -92,6 +92,7 @@ class Player(pg.sprite.Sprite):
         self.collide_with_group(self.game.coins, True)
         # self.rect.x = self.x * TILESIZE
         # self.rect.y = self.y * TILESIZE
+
 class Player2(pg.sprite.Sprite):
     def __init__(self, game, x, y):
         self.groups = game.all_sprites
@@ -102,6 +103,7 @@ class Player2(pg.sprite.Sprite):
         self.vx, self.vy = 5, 5
         self.x = x * TILESIZE
         self.y = y * TILESIZE
+        self.moneybag = 7
 
     def get_keys(self):
         self.vx, self.vy = 0, 0
@@ -156,8 +158,8 @@ class Player2(pg.sprite.Sprite):
     def collide_with_group(self, group, kill):
         hits = pg.sprite.spritecollide(self, group, kill)
         if hits:
-            if str(hits[0].__class__.__name__) == "Coin":
-                self.moneybag += 1            
+            if str(hits[0].__class__.__name__) == "Coin2":
+                self.moneybag -= 1            
     # old motion
     # def move(self, dx=0, dy=0):
     #     self.x += dx
@@ -174,6 +176,7 @@ class Player2(pg.sprite.Sprite):
         self.collide_with_walls('x')
         self.rect.y = self.y
         self.collide_with_walls('y')
+        self.collide_with_group(self.game.coins, True)
         # self.rect.x = self.x * TILESIZE
         # self.rect.y = self.y * TILESIZE
 
