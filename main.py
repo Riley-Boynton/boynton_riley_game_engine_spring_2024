@@ -6,9 +6,9 @@
 '''
 goals, rules, feedback, freedom, what the verb, and will it form a sentence
 
-battling for the most coins
-same-computer multiplayer
-start and end screen
+battling for the most coins -- did this but no winning involved
+same-computer multiplayer -- did this
+start and end screen -- did start
 '''
 
 # all the things from the other files
@@ -179,7 +179,7 @@ class Game:
         self.draw_text(self.screen, "PRESS ANY KEY TO BEGIN", 72, BLACK, WIDTH/2, 410)
         pg.display.flip()
         self.wait_for_key()
-
+    
     def wait_for_key(self):
         waiting = True
         while waiting:
