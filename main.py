@@ -1,6 +1,7 @@
 # This file was created by: Riley
 # Riley's's edits will appear shortly...
 # Riley is the best
+######THANK YOU SO MUCH NINTENDO I USED ALL YOUR STUFF######
 
 '''
 goals, rules, feedback, freedom, what the verb, and will it form a sentence
