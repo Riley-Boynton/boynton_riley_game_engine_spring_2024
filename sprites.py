@@ -303,7 +303,8 @@ class Wall(pg.sprite.Sprite):
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
         self.image = pg.Surface((TILESIZE, TILESIZE))
-        self.image.fill(YELLOW)
+        self.image = game.walls2_img
+        # self.image.fill(YELLOW)
         self.rect = self.image.get_rect()
         self.x = x
         self.y = y
@@ -354,7 +355,8 @@ class Wall2(pg.sprite.Sprite):
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
         self.image = pg.Surface((TILESIZE, TILESIZE))
-        self.image.fill(RED)
+        self.image = game.walls_img
+        # self.image.fill(RED)
         self.rect = self.image.get_rect()
         self.x = x
         self.y = y

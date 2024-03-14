@@ -5,9 +5,9 @@
 '''
 goals, rules, feedback, freedom, what the verb, and will it form a sentence
 
-enemies that collide with other sprites
+battling for the most coins
 same-computer multiplayer
-shooting lazers
+hidden warp areas
 '''
 
 # all the things from the other files
@@ -43,6 +43,10 @@ class Game:
         self.coin_img = pg.image.load(path.join(img_folder, 'zeldacoin.png')).convert_alpha()
         self.map_data = []
         self.coin_img2 = pg.image.load(path.join(img_folder, 'mariocoin.png')).convert_alpha()
+        self.map_data = []
+        self.walls_img = pg.image.load(path.join(img_folder, 'marioblock.png')).convert_alpha()
+        self.map_data = []
+        self.walls2_img = pg.image.load(path.join(img_folder, 'zeldablock.png')).convert_alpha()
         self.map_data = []
         #  I moved link.png to the right place
     
