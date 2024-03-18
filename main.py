@@ -2,13 +2,14 @@
 # Riley's's edits will appear shortly...
 # Riley is the best
 ######THANK YOU SO MUCH NINTENDO I USED ALL YOUR STUFF######
+######I ALSO USED A LOT OF MR. COZORT'S CODE THANKS FOR THAT######
 
 '''
 goals, rules, feedback, freedom, what the verb, and will it form a sentence
 
-battling for the most coins -- did this but no winning involved
-same-computer multiplayer -- did this
-start and end screen -- did start
+getting coins faster than opponent
+same-computer multiplayer
+start screen to show how to play
 '''
 
 # all the things from the other files
@@ -96,15 +97,13 @@ class Game:
                 if tile == 'P':
                     self.player2 = Player2(self, col, row)
                     # puts the player on a specific point on the screen
-                if tile == 'e':
-                    print("an enemy at", row, col)
-                    Enemy(self, col, row)
                 if tile == 'c':
                     print("a zelda coin at", row, col)
                     Coin(self, col, row)    
                 if tile == 'C':
                     print("a mario coin at", row, col)
-                    Coin2(self, col, row)    
+                    Coin2(self, col, row)
+                        
     def run(self):
         # how to run the game
         self.playing = True
@@ -144,8 +143,8 @@ class Game:
         self.screen.fill(BGCOLOR)
         self.draw_grid()
         self.all_sprites.draw(self.screen)
-        self.draw_text(self.screen, str(self.player.moneybag), 64, YELLOW, WIDTH/2 + 300, 100)
-        self.draw_text(self.screen, str(self.player2.moneybag), 64, RED, WIDTH/2 + -250, 100)
+        self.draw_text(self.screen, str(self.player.moneybag), 144, YELLOW, WIDTH/2 + 300, 85)
+        self.draw_text(self.screen, str(self.player2.moneybag), 144, RED, WIDTH/2 + -250, 85)
         pg.display.flip()
 
     def events(self):
@@ -175,8 +174,9 @@ class Game:
         self.draw_text(self.screen, "Mario: use WASD to move", 48, RED, WIDTH/2, 210)
         self.draw_text(self.screen, "Link: use arrows to move", 48, YELLOW, WIDTH/2, 260)
         self.draw_text(self.screen, "The goal is to collect all the coins the fastest", 36, BLACK, WIDTH/2, 325)
-        self.draw_text(self.screen, "There are seven (7) coins in total", 36, BLACK, WIDTH/2, 360)
-        self.draw_text(self.screen, "PRESS ANY KEY TO BEGIN", 72, BLACK, WIDTH/2, 410)
+        self.draw_text(self.screen, "Whoever gets to zero (0) coins the fastest wins", 36, BLACK, WIDTH/2, 360)
+        self.draw_text(self.screen, "There are seven (7) coins in total", 36, BLACK, WIDTH/2, 360 + 35)
+        self.draw_text(self.screen, "PRESS ANY KEY TO BEGIN", 72, BLACK, WIDTH/2, 410 + 35)
         pg.display.flip()
         self.wait_for_key()
     
