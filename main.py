@@ -13,6 +13,7 @@ start screen to show how to play
 '''
 
 # all the things from the other files
+import time
 import pygame as pg
 from settings import *
 from sprites import *
@@ -124,6 +125,10 @@ class Game:
         pass
     def update(self):
         self.all_sprites.update()
+        if self.player.moneybag == 0:
+            self.playing = False
+        if self.player2.moneybag == 0:
+            self.playing = False
     
     def draw_grid(self):
         for x in range(0, WIDTH, TILESIZE):
@@ -196,4 +201,3 @@ g.show_start_screen()
 while True:
     g.new()
     g.run()
-    g.show_start_screen()
