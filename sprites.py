@@ -159,17 +159,46 @@ class PlayerLink(pg.sprite.Sprite):
         # self.rect.x = self.x * TILESIZE
         # self.rect.y = self.y * TILESIZE
 
+
+
 class PlayerMario(pg.sprite.Sprite):
     def __init__(self, game, x, y):
         self.groups = game.all_sprites
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
-        self.image = game.player_img2
+        self.image = pg.Surface((TILESIZE, TILESIZE))
+        self.spritesheet = Spritesheet(path.join(img_folder, 'animatedmario.png'))
+        self.load_images()
+        # self.image.fill(GREEN)
+        self.image = self.standing_frames[0]
         self.rect = self.image.get_rect()
         self.vx, self.vy = 5, 5
         self.x = x * TILESIZE
         self.y = y * TILESIZE
         self.moneybag = 7
+         # needed for animated sprite
+        self.current_frame = 0
+        # needed for animated sprite
+        self.last_update = 0
+        self.material = True
+        # needed for animated sprite
+        self.jumping = False
+        # needed for animated sprite
+        self.walking = False
+
+    def load_images(self):
+        self.standing_frames = [self.spritesheet.get_image(0,0, 32, 32), 
+                                self.spritesheet.get_image(32,0, 32, 32)]
+     
+    def animate(self):
+        now = pg.time.get_ticks()
+        if now - self.last_update > 350:
+            self.last_update = now
+            self.current_frame = (self.current_frame + 1) % len(self.standing_frames)
+            bottom = self.rect.bottom
+            self.image = self.standing_frames[self.current_frame]
+            self.rect = self.image.get_rect()
+            self.rect.bottom = bottom
 
     def get_keys(self):
         self.vx, self.vy = 0, 0
@@ -182,6 +211,12 @@ class PlayerMario(pg.sprite.Sprite):
             self.vy = -PLAYER_SPEED * TILESIZE
         if keys[pg.K_s]:
             self.vy = PLAYER_SPEED * TILESIZE
+        if keys[pg.K_RSHIFT]:
+            self.pew
+    def pew(self):
+        p = PewPew(self.game, self.rect.x, self.rect.y)
+        print(p.rect.x)
+        print(p.rect.y)
             
     def collide_with_walls(self, dir):
         if dir == 'x':
@@ -224,15 +259,25 @@ class PlayerMario(pg.sprite.Sprite):
     def collide_with_group(self, group, kill):
         hits = pg.sprite.spritecollide(self, group, kill)
         if hits:
-            if str(hits[0].__class__.__name__) == "Coin2":
-                self.moneybag -= 1            
+            if str(hits[0].__class__.__name__) == "Coin":
+                self.moneybag -= 1  
     # old motion
     # def move(self, dx=0, dy=0):
     #     self.x += dx
     #     self.y += dy
+    def animate(self):
+        now = pg.time.get_ticks()
+        if now - self.last_update > 350:
+            self.last_update = now
+            self.current_frame = (self.current_frame + 1) % len(self.standing_frames)
+            bottom = self.rect.bottom
+            self.image = self.standing_frames[self.current_frame]
+            self.rect = self.image.get_rect()
+            self.rect.bottom = bottom
 
     # UPDATE THE UPDATE
     def update(self):
+        self.animate()
         # self.rect.x = self.x
         # self.rect.y = self.y
         self.get_keys()
