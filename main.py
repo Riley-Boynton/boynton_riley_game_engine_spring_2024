@@ -13,8 +13,7 @@ start screen to show how to play
 '''
 '''
 BETA GOALS
-1. new sprites that look cleaner
-2. add enemies and weapons to beat the enemies
+add awesome music to get the player happy
 '''
 # all the things from the other files
 import time
@@ -30,11 +29,12 @@ class Game:
     # behold the methods...
     def __init__(self):
         pg.init()
+        pg.mixer.init()
         # the dimensions of the screen
         self.screen = pg.display.set_mode((WIDTH, HEIGHT))
         # the title of the game
         pg.display.set_caption("Mario Vs Link")
-        # we'll work with this later
+        # eeewe'll work with this later
         self.clock = pg.time.Clock()
         pg.key.set_repeat(500, 100)
         self.running = True
@@ -43,9 +43,10 @@ class Game:
     def load_data(self):
         game_folder = path.dirname(__file__)
         img_folder = path.join(game_folder, 'images')
+        self.snd_folder = path.join(game_folder, 'sounds')
         self.player_img = pg.image.load(path.join(img_folder, 'animatedlink.png')).convert_alpha()
         self.map_data = []
-        self.player_img2 = pg.image.load(path.join(img_folder, 'mario.png')).convert_alpha()
+        self.player_img2 = pg.image.load(path.join(img_folder, 'animatedmario.png')).convert_alpha()
         self.map_data = []
         self.coin_img = pg.image.load(path.join(img_folder, 'zeldacoin.png')).convert_alpha()
         self.map_data = []
@@ -54,6 +55,8 @@ class Game:
         self.walls_img = pg.image.load(path.join(img_folder, 'marioblock.png')).convert_alpha()
         self.map_data = []
         self.walls2_img = pg.image.load(path.join(img_folder, 'zeldablock.png')).convert_alpha()
+        self.map_data = []
+        self.goomba_img = pg.image.load(path.join(img_folder, 'goomba.png')).convert_alpha()
         self.map_data = []
         # did a lot of different images
     
@@ -80,11 +83,13 @@ class Game:
     #             self.map_data.append(line)
     #             print(self.map_data)
     def new(self):
+        pg.mixer.music.load(path.join(self.snd_folder, 'latesummerrun.mp3'))
         self.all_sprites = pg.sprite.Group()
         self.walls = pg.sprite.Group()
         self.coins = pg.sprite.Group()
         self.fakewalls = pg.sprite.Group()
         self.pew_pews = pg.sprite.Group()
+        self.mobs = pg.sprite.Group()
         # self.player = Player(self, 10, 10)
         # self.all_sprites.add(self.player)
         # for x in range(10, 20):
@@ -95,10 +100,10 @@ class Game:
                 print(col)
                 if tile == '1':
                     print("a wall at", row, col)
-                    Wall(self, col, row)
+                    ZeldaWall(self, col, row)
                 if tile == '2':
                     print("an alternate wall at", row, col)
-                    Wall2(self, col, row)
+                    MarioWall(self, col, row)
                 if tile == '3':
                     print("an fake wall at", row, col)
                     FakeWall(self, col, row)
@@ -106,20 +111,24 @@ class Game:
                     print("an alternate fake wall at", row, col)
                     FakeWall2(self, col, row)
                 if tile == 'L':
-                    self.player = PlayerLink(self, col, row)
+                    self.playerlink = PlayerLink(self, col, row)
                 if tile == 'M':
-                    self.player2 = PlayerMario(self, col, row)
+                    self.playermario = PlayerMario(self, col, row)
                     # puts the player on a specific point on the screen
                 if tile == 'c':
                     print("a zelda coin at", row, col)
-                    Coin(self, col, row)    
+                    ZeldaCoin(self, col, row)    
                 if tile == 'C':
                     print("a mario coin at", row, col)
-                    Coin2(self, col, row)
+                    MarioCoin(self, col, row)
+                if tile == 'g':
+                    print("a goomba at", row, col)
+                    Mob(self, col, row)
         # soooo many sprites
                         
     def run(self):
         # how to run the game
+        pg.mixer.music.play(loops=-1)
         self.playing = True
         while self.playing:
             self.dt = self.clock.tick(FPS) / 1000
@@ -138,9 +147,9 @@ class Game:
         pass
     def update(self):
         self.all_sprites.update()
-        if self.player.moneybag == 0:
+        if self.playerlink.moneybag == 0:
             self.playing = False
-        if self.player2.moneybag == 0:
+        if self.playermario.moneybag == 0:
             self.playing = False
     
     def draw_grid(self):
@@ -163,8 +172,8 @@ class Game:
         self.screen.fill(BGCOLOR)
         self.draw_grid()
         self.all_sprites.draw(self.screen)
-        self.draw_text(self.screen, str(self.player.moneybag), 144, YELLOW, WIDTH/2 + 300, 85)
-        self.draw_text(self.screen, str(self.player2.moneybag), 144, RED, WIDTH/2 + -250, 85)
+        self.draw_text(self.screen, str(self.playerlink.moneybag), 144, YELLOW, WIDTH/2 + 300, 85)
+        self.draw_text(self.screen, str(self.playermario.moneybag), 144, RED, WIDTH/2 + -250, 85)
         pg.display.flip()
         # puts everything on the screen
 
@@ -201,6 +210,14 @@ class Game:
         pg.display.flip()
         self.wait_for_key()
         # I think the start screen took the longest
+
+    def show_go_screen1(self):
+        if not self.running:
+            return
+        self.screen.fill(BGCOLOR)
+        self.draw_text(self.screen, "LINK WINS", 24, BLACK, WIDTH/2, HEIGHT/2)
+        pg.display.flip()
+        self.wait_for_key()
     
     def wait_for_key(self):
         waiting = True

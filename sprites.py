@@ -4,6 +4,8 @@ import pygame as pg
 from settings import *
 from utils import *
 from os import path
+from random import choice
+from random import randint
 
 vec =pg.math.Vector2
 
@@ -79,8 +81,8 @@ class PlayerLink(pg.sprite.Sprite):
             self.vy = -PLAYER_SPEED * TILESIZE
         if keys[pg.K_DOWN]:
             self.vy = PLAYER_SPEED * TILESIZE
-        if keys[pg.K_RSHIFT]:
-            self.pew
+        # if keys[pg.K_RSHIFT]:
+        #     self.pew
     def pew(self):
         p = PewPew(self.game, self.rect.x, self.rect.y)
         print(p.rect.x)
@@ -127,7 +129,7 @@ class PlayerLink(pg.sprite.Sprite):
     def collide_with_group(self, group, kill):
         hits = pg.sprite.spritecollide(self, group, kill)
         if hits:
-            if str(hits[0].__class__.__name__) == "Coin":
+            if str(hits[0].__class__.__name__) == "ZeldaCoin":
                 self.moneybag -= 1  
     # old motion
     # def move(self, dx=0, dy=0):
@@ -211,8 +213,8 @@ class PlayerMario(pg.sprite.Sprite):
             self.vy = -PLAYER_SPEED * TILESIZE
         if keys[pg.K_s]:
             self.vy = PLAYER_SPEED * TILESIZE
-        if keys[pg.K_RSHIFT]:
-            self.pew
+        # if keys[pg.K_e]:
+        #     self.pew()
     def pew(self):
         p = PewPew(self.game, self.rect.x, self.rect.y)
         print(p.rect.x)
@@ -259,7 +261,7 @@ class PlayerMario(pg.sprite.Sprite):
     def collide_with_group(self, group, kill):
         hits = pg.sprite.spritecollide(self, group, kill)
         if hits:
-            if str(hits[0].__class__.__name__) == "Coin":
+            if str(hits[0].__class__.__name__) == "MarioCoin":
                 self.moneybag -= 1  
     # old motion
     # def move(self, dx=0, dy=0):
@@ -291,7 +293,7 @@ class PlayerMario(pg.sprite.Sprite):
         # self.rect.x = self.x * TILESIZE
         # self.rect.y = self.y * TILESIZE
 
-class Wall(pg.sprite.Sprite):
+class ZeldaWall(pg.sprite.Sprite):
     def __init__(self, game, x, y):
         self.groups = game.all_sprites, game.walls
         pg.sprite.Sprite.__init__(self, self.groups)
@@ -337,7 +339,7 @@ class FakeWall(pg.sprite.Sprite):
         # if self.rect.y > HEIGHT or self.rect.y < 0:
         #     self.speed *= -1
 
-class Coin(pg.sprite.Sprite):
+class ZeldaCoin(pg.sprite.Sprite):
     def __init__(self, game, x, y):
         self.groups = game.all_sprites, game.coins
         pg.sprite.Sprite.__init__(self, self.groups)
@@ -351,7 +353,7 @@ class Coin(pg.sprite.Sprite):
         self.rect.x = x * TILESIZE
         self.rect.y = y * TILESIZE
 
-class Coin2(pg.sprite.Sprite):
+class MarioCoin(pg.sprite.Sprite):
     def __init__(self, game, x, y):
         self.groups = game.all_sprites, game.coins
         pg.sprite.Sprite.__init__(self, self.groups)
@@ -366,7 +368,7 @@ class Coin2(pg.sprite.Sprite):
         self.rect.y = y * TILESIZE
 
 
-class Wall2(pg.sprite.Sprite):
+class MarioWall(pg.sprite.Sprite):
     def __init__(self, game, x, y):
         self.groups = game.all_sprites, game.walls
         pg.sprite.Sprite.__init__(self, self.groups)
@@ -388,6 +390,8 @@ class Wall2(pg.sprite.Sprite):
             self.speed *= -1
         # if self.rect.y > HEIGHT or self.rect.y < 0:
         #     self.speed *= -1
+
+
 class FakeWall2(pg.sprite.Sprite):
     def __init__(self, game, x, y):
         self.groups = game.all_sprites, game.fakewalls
@@ -419,6 +423,8 @@ class PewPew(pg.sprite.Sprite):
         self.image = pg.Surface((TILESIZE/4, TILESIZE/4))
         self.image.fill(YELLOW)
         self.rect = self.image.get_rect()
+        self.dir = [1, 1]
+        self.PlayerMario = PlayerMario(game, x, y) 
         self.x = x
         self.y = y
         self.rect.x = x
@@ -427,10 +433,82 @@ class PewPew(pg.sprite.Sprite):
         print("I created a pew pew...")
     def collide_with_group(self, group, kill):
         hits = pg.sprite.spritecollide(self, group, kill)
-        # if hits:
-        #     if str(hits[0].__class__.__name__) == "Coin":
-        #         self.moneybag += 1
+        if hits:
+            if str(hits[0].__class__.__name__) == "MarioCoin":
+                self.PlayerMario.moneybag -= 1  
     def update(self):
         self.collide_with_group(self.game.coins, True)
-        self.rect.y -= self.speed
+        self.rect.x += self.dir[0]*self.speed
+        self.rect.y += self.dir[1]*self.speed
+    def collide_with_walls(self, dir):
+        if dir == 'x':
+            hits = pg.sprite.spritecollide(self, self.game.walls, False )
+            if hits:
+                if self.vx > 0:
+                    self.x = hits[0].rect.left - self.rect.width
+                if self.vx < 0:
+                    self.x = hits[0].rect.right
+                self.vx = 0
+                self.rect.x = self.x
+        if dir == 'y':
+            hits = pg.sprite.spritecollide(self, self.game.walls, False )
+            if hits:
+                if self.vy > 0:
+                    self.y = hits[0].rect.top - self.rect.height
+                if self.vy < 0:
+                    self.y = hits[0].rect.bottom
+                self.vy = 0
+                self.rect.y = self.y
+
+class Mob(pg.sprite.Sprite):
+    def __init__(self, game, x, y):
+        self.groups = game.all_sprites, game.mobs
+        pg.sprite.Sprite.__init__(self, self.groups)
+        self.game = game
+        self.image = pg.Surface((TILESIZE, TILESIZE))
+        # self.image.fill(RED)
+        self.image = self.game.goomba_img
+        self.rect = self.image.get_rect()
+        self.x = x
+        self.y = y
+        self.vx, self.vy = 100, 100
+        self.x = x * TILESIZE
+        self.y = y * TILESIZE
+        self.speed = randint(1,3)
+        self.hitpoints = 5
+        print("created mob at", self.rect.x, self.rect.y)
+    def collide_with_walls(self, dir):
+        if dir == 'x':
+            # print('colliding on the x')
+            hits = pg.sprite.spritecollide(self, self.game.walls, False)
+            if hits:
+                self.vx *= -1
+                self.rect.x = self.x
+        if dir == 'y':
+            # print('colliding on the y')
+            hits = pg.sprite.spritecollide(self, self.game.walls, False)
+            if hits:
+                self.vy *= -1
+                self.rect.y = self.y
+    def chasing(self):
+        if self.rect.x < self.game.playermario.rect.x:
+            self.vx = 100
+        if self.rect.x > self.game.playermario.rect.x:
+            self.vx = -100    
+        if self.rect.y < self.game.playermario.rect.y:
+            self.vy = 100
+        if self.rect.y > self.game.playermario.rect.y:
+            self.vy = -100
+    def update(self):
+        if self.hitpoints < 1:
+            self.kill()
+        # self.image.blit(self.game.screen, self.pic)
         # pass
+        # # self.rect.x += 1
+        self.chasing()
+        self.x += self.vx * self.game.dt
+        self.y += self.vy * self.game.dt
+        self.rect.x = self.x
+        self.collide_with_walls('x')
+        self.rect.y = self.y
+        self.collide_with_walls('y')
