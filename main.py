@@ -3,7 +3,9 @@
 # Riley is the best
 ######THANK YOU SO MUCH NINTENDO I USED ALL YOUR STUFF######
 ######I ALSO USED A LOT OF MR. COZORT'S CODE THANKS FOR THAT######
-######I ALSO USED CHATGPT FOR SOME OF THE MUSIC STUFF THAT DIDN'T WORK######
+
+
+                                # THANK YOU CHAT GPT
 
 '''
 goals, rules, feedback, freedom, what the verb, and will it form a sentence
@@ -25,8 +27,16 @@ sound effects for collecting coins
 
 '''
 FINAL GOALS
-have more music soundtracks
-random background music
+have more music soundtracks -- I got 10 sounds...
+random background music -- did this... maybe I should do more
+
+NEW FINAL GOALS (more difficult)
+alright I've got another one: freezing the opposing player with an item
+1. make the item invisible
+2. display onscreen: you froze your enemy!
+3. also have new frozen sounding sounds when someone is frozen
+4. make freezing last for 5 seconds
+5. 2 freeze items per side
 '''
 
 
@@ -38,6 +48,8 @@ from sprites import *
 import sys
 from random import randint
 from os import path
+import os
+import random
 
 # create a game class 
 class Game:
@@ -99,7 +111,10 @@ class Game:
     #             self.map_data.append(line)
     #             print(self.map_data)
     def new(self):
-        pg.mixer.music.load(path.join(self.snd_folder, 'latesummerrun.mp3'))
+        # pg.mixer.music.load(path.join(self.snd_folder, 'latesummerrun.mp3'))
+        soundtracks = os.listdir(self.snd_folder)
+        chosen_soundtrack = random.choice(soundtracks)
+        pg.mixer.music.load(os.path.join(self.snd_folder, chosen_soundtrack))
         # this music I downloaded but added my own sounds
         # the "mmmmmmm" was my voice
         # this is from a podcast "Chasing Scratch"
