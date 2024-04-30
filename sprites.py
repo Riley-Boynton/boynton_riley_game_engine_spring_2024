@@ -130,7 +130,9 @@ class PlayerLink(pg.sprite.Sprite):
         hits = pg.sprite.spritecollide(self, group, kill)
         if hits:
             if str(hits[0].__class__.__name__) == "ZeldaCoin":
-                self.moneybag -= 1  
+                self.moneybag -= 1
+                mariocoin_sound = pg.mixer.Sound("zeldacoinsound.mp3")
+                mariocoin_sound.play()  
     # old motion
     # def move(self, dx=0, dy=0):
     #     self.x += dx
@@ -262,7 +264,9 @@ class PlayerMario(pg.sprite.Sprite):
         hits = pg.sprite.spritecollide(self, group, kill)
         if hits:
             if str(hits[0].__class__.__name__) == "MarioCoin":
-                self.moneybag -= 1  
+                self.moneybag -= 1
+                coin_sound = pg.mixer.Sound("mariocoinsound.mp3")
+                coin_sound.play()
     # old motion
     # def move(self, dx=0, dy=0):
     #     self.x += dx

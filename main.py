@@ -3,18 +3,33 @@
 # Riley is the best
 ######THANK YOU SO MUCH NINTENDO I USED ALL YOUR STUFF######
 ######I ALSO USED A LOT OF MR. COZORT'S CODE THANKS FOR THAT######
+######I ALSO USED CHATGPT FOR SOME OF THE MUSIC STUFF THAT DIDN'T WORK######
 
 '''
 goals, rules, feedback, freedom, what the verb, and will it form a sentence
+'''
 
+
+'''
+ALPHA GOALS
 getting coins faster than opponent
 same-computer multiplayer
 start screen to show how to play
 '''
+
 '''
 BETA GOALS
 add awesome music to get the player happy
+sound effects for collecting coins
 '''
+
+'''
+FINAL GOALS
+have more music soundtracks
+random background music
+'''
+
+
 # all the things from the other files
 import time
 import pygame as pg
@@ -44,6 +59,7 @@ class Game:
         game_folder = path.dirname(__file__)
         img_folder = path.join(game_folder, 'images')
         self.snd_folder = path.join(game_folder, 'sounds')
+        # Idk why I had to add "self"
         self.player_img = pg.image.load(path.join(img_folder, 'animatedlink.png')).convert_alpha()
         self.map_data = []
         self.player_img2 = pg.image.load(path.join(img_folder, 'animatedmario.png')).convert_alpha()
@@ -84,6 +100,9 @@ class Game:
     #             print(self.map_data)
     def new(self):
         pg.mixer.music.load(path.join(self.snd_folder, 'latesummerrun.mp3'))
+        # this music I downloaded but added my own sounds
+        # the "mmmmmmm" was my voice
+        # this is from a podcast "Chasing Scratch"
         self.all_sprites = pg.sprite.Group()
         self.walls = pg.sprite.Group()
         self.coins = pg.sprite.Group()
