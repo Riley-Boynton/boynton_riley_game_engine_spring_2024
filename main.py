@@ -27,7 +27,7 @@ sound effects for collecting coins
 
 '''
 FINAL GOALS
-have more music soundtracks -- I got 10 sounds...
+have more music soundtracks -- I got 9 sounds...
 random background music -- did this... maybe I should do more
 
 NEW FINAL GOALS (more difficult)
@@ -67,6 +67,7 @@ class Game:
         self.running = True
         # later on we'll story game info with this
         self.load_data()
+        self.timefreezelink = False
     def load_data(self):
         game_folder = path.dirname(__file__)
         img_folder = path.join(game_folder, 'images')
@@ -124,6 +125,7 @@ class Game:
         self.fakewalls = pg.sprite.Group()
         self.pew_pews = pg.sprite.Group()
         self.mobs = pg.sprite.Group()
+        self.freezes = pg.sprite.Group()
         # self.player = Player(self, 10, 10)
         # self.all_sprites.add(self.player)
         # for x in range(10, 20):
@@ -158,6 +160,9 @@ class Game:
                 if tile == 'g':
                     print("a goomba at", row, col)
                     Mob(self, col, row)
+                if tile == 'f':
+                    FreezeItem (self, col, row)
+
         # soooo many sprites
                         
     def run(self):
@@ -180,11 +185,15 @@ class Game:
     def input(self): 
         pass
     def update(self):
-        self.all_sprites.update()
+        if self.timefreezelink == False:
+            self.all_sprites.update()
         if self.playerlink.moneybag == 0:
             self.playing = False
         if self.playermario.moneybag == 0:
             self.playing = False
+        self.playerlink.update()
+        
+        
     
     def draw_grid(self):
         for x in range(0, WIDTH, TILESIZE):
@@ -269,4 +278,4 @@ g.show_start_screen()
 while True:
     g.new()
     g.run()
-# starts the game
+# starts the game 

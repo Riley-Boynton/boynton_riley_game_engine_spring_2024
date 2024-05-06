@@ -131,8 +131,10 @@ class PlayerLink(pg.sprite.Sprite):
         if hits:
             if str(hits[0].__class__.__name__) == "ZeldaCoin":
                 self.moneybag -= 1
-                mariocoin_sound = pg.mixer.Sound("zeldacoinsound.mp3")
-                mariocoin_sound.play()  
+                zeldacoin_sound = pg.mixer.Sound("zeldacoinsound.mp3")
+                zeldacoin_sound.play()  
+            if str(hits[0].__class__.__name__) == "FreezeItem":
+                self.game.timefreezelink = True
     # old motion
     # def move(self, dx=0, dy=0):
     #     self.x += dx
@@ -160,6 +162,7 @@ class PlayerLink(pg.sprite.Sprite):
         self.rect.y = self.y
         self.collide_with_walls('y')
         self.collide_with_group(self.game.coins, True)
+        self.collide_with_group(self.game.freezes, True)
         # self.rect.x = self.x * TILESIZE
         # self.rect.y = self.y * TILESIZE
 
@@ -267,6 +270,8 @@ class PlayerMario(pg.sprite.Sprite):
                 self.moneybag -= 1
                 coin_sound = pg.mixer.Sound("mariocoinsound.mp3")
                 coin_sound.play()
+            if str(hits[0].__class__.__name__) == "FreezeItem":
+                self.game.timefreezemario = True
     # old motion
     # def move(self, dx=0, dy=0):
     #     self.x += dx
@@ -516,3 +521,76 @@ class Mob(pg.sprite.Sprite):
         self.collide_with_walls('x')
         self.rect.y = self.y
         self.collide_with_walls('y')
+
+# class FreezeItem:
+#     def __init__(self, game, x, y):
+#         self.groups = game.all_sprites, game.freezes
+#         pg.sprite.Sprite.__init__(self, self.groups)
+#         self.game = game
+#         self.image = pg.Surface((TILESIZE, TILESIZE))
+#         # self.image.fill(RED)
+#         self.image = pg.Surface((WIDTH, HEIGHT))
+#         self.image.fill(YELLOW)
+#         self.duration = 5  # Duration of freezing effect
+#         self.x = x
+#         self.y = y
+#         self.duration = 5
+#         self.vx, self.vy = 100, 100
+#         self.x = x * TILESIZE
+#         self.y = y * TILESIZE
+
+class FreezeItem(pg.sprite.Sprite):
+    def __init__(self, game, x, y):
+        self.groups = game.all_sprites, game.freezes
+        pg.sprite.Sprite.__init__(self, self.groups)
+        self.game = game
+        self.image = pg.Surface((TILESIZE, TILESIZE))
+        self.image.fill(RED)
+        self.rect = self.image.get_rect()
+        self.x = x
+        self.y = y
+        self.rect.x = x * TILESIZE
+        self.rect.y = y * TILESIZE
+        self.speed = 0
+
+# class FreezeItem(pg.sprite.Sprite):
+#     def __init__(self, game, x, y):
+#         self.groups = game.all_sprites, game.freezes
+#         pg.sprite.Sprite.__init__(self, self.groups)
+#         self.game = game
+#         self.image = pg.Surface((TILESIZE, TILESIZE))
+#         self.image.fill(GOLD)
+#         self.rect = self.image.get_rect()
+#         self.x = x
+#         self.y = y
+#         self.x = x * TILESIZE
+#         self.y = y * TILESIZE
+    
+
+# class FreezeItem:
+#     def __init__(self, game, name, x, y, duration):
+#         self.groups = game.all_sprites, game.items
+#         pg.sprite.Sprite.__init__(self, self.groups)
+#         self.game = game
+#         self.image = pg.Surface((TILESIZE, TILESIZE))
+#         # self.image.fill(RED)
+#         self.image = pg.Surface((WIDTH, HEIGHT))
+#         self.name = name
+#         self.image.fill(YELLOW)
+#         self.duration = duration  # Assigning the duration argument
+#         self.x = x * TILESIZE  # Calculating the pixel position from tile position
+#         self.y = y * TILESIZE  # Calculating the pixel position from tile position
+#         self.vx, self.vy = 100, 100
+
+# # Outside of the class, create the freeze item
+# def create_freeze_item(game, name, x, y, duration):
+#     freeze_item = FreezeItem(game, name, x, y, duration)
+#     return freeze_item
+
+# def apply_freeze_effect(self, PlayerLink):
+#         PlayerLink.frozen = True
+#         print(f"{PlayerLink.name} is frozen by {PlayerMario.name} for {self.duration} seconds.")
+
+# def apply_freeze_effect(self, PlayerMario):
+#         PlayerMario.frozen = True
+#         print(f"{PlayerMario.name} is frozen by {PlayerLink.name} for {self.duration} seconds.")
