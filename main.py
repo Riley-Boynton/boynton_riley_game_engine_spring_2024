@@ -67,7 +67,15 @@ class Game:
         self.running = True
         # later on we'll story game info with this
         self.load_data()
+        self.elapsed_time = 0
+        self.max_time = 5000  # 5 seconds in milliseconds
+        self.update_time = 0  # Track when the sprites were last updated
+        self.update_interval = 1000  # Update interval for sprites in milliseconds
+        self.time_freeze_duration = 5000  # 5 seconds in milliseconds
+        self.time_freeze_start_time = pg.time.get_ticks()
+        #                                  pasted from CHATGPT
         self.timefreezelink = False
+        self.timefreezemario = False
     def load_data(self):
         game_folder = path.dirname(__file__)
         img_folder = path.join(game_folder, 'images')
@@ -126,6 +134,8 @@ class Game:
         self.pew_pews = pg.sprite.Group()
         self.mobs = pg.sprite.Group()
         self.freezes = pg.sprite.Group()
+        self.zelda_sprites = pg.sprite.Group()
+        self.mario_sprites = pg.sprite.Group()
         # self.player = Player(self, 10, 10)
         # self.all_sprites.add(self.player)
         # for x in range(10, 20):
@@ -185,13 +195,53 @@ class Game:
     def input(self): 
         pass
     def update(self):
-        if self.timefreezelink == False:
-            self.all_sprites.update()
+        # if self.timefreezelink == False: 
+        #     self.all_sprites.update()
+        # if self.timefreezemario == False:
+        #     self.all_sprites.update()
         if self.playerlink.moneybag == 0:
             self.playing = False
         if self.playermario.moneybag == 0:
             self.playing = False
-        self.playerlink.update()
+        # if self.timefreezelink:
+        #     if pg.time.get_ticks() - self.update_time >= self.update_interval:
+        #         self.zelda_sprites.update()
+        #         print("Mario is frozen!")
+        # elif self.timefreezemario:
+        #     if pg.time.get_ticks() - self.update_time >= self.update_interval:
+        #         self.mario_sprites.update()
+        #         print("Link is frozen!")
+        # else:
+        #     if pg.time.get_ticks() - self.update_time >= self.update_interval:
+        #         self.all_sprites.update()
+        #                                        pasted from CHATGPT
+
+        
+        if self.timefreezelink == True:
+            self.zelda_sprites.update()
+            pg.time.wait(5000)
+            self.timefreezelink = False
+        elif self.timefreezemario == True:
+            self.mario_sprites.update()
+            pg.time.wait(5000)
+            self.timefreezemario = False
+        else:
+            self.all_sprites.update()
+
+    def freeze_timer(self):
+        # This function will run in a separate thread
+        pg.time.wait(5000)  # Wait for 5 seconds
+        self.timefreezelink = True
+        self.timefreezemario = False
+
+        # if self.timefreezelink == True:
+        #     self.zelda_sprites.update()
+        # elif self.timefreezemario == True:
+        #     self.mario_sprites.update()
+        # else:
+        #     self.all_sprites.update()
+        # if self.playing == False:
+        #     self.all_sprites.update() 
         
         
     

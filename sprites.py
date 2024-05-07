@@ -33,7 +33,7 @@ img_folder = path.join(game_folder, 'images')
 # write a player class
 class PlayerLink(pg.sprite.Sprite):
     def __init__(self, game, x, y):
-        self.groups = game.all_sprites
+        self.groups = game.all_sprites, game.zelda_sprites
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
         self.image = pg.Surface((TILESIZE, TILESIZE))
@@ -170,7 +170,7 @@ class PlayerLink(pg.sprite.Sprite):
 
 class PlayerMario(pg.sprite.Sprite):
     def __init__(self, game, x, y):
-        self.groups = game.all_sprites
+        self.groups = game.all_sprites, game.mario_sprites
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
         self.image = pg.Surface((TILESIZE, TILESIZE))
@@ -299,12 +299,13 @@ class PlayerMario(pg.sprite.Sprite):
         self.rect.y = self.y
         self.collide_with_walls('y')
         self.collide_with_group(self.game.coins, True)
+        self.collide_with_group(self.game.freezes, True)
         # self.rect.x = self.x * TILESIZE
         # self.rect.y = self.y * TILESIZE
 
 class ZeldaWall(pg.sprite.Sprite):
     def __init__(self, game, x, y):
-        self.groups = game.all_sprites, game.walls
+        self.groups = game.all_sprites, game.walls, game.zelda_sprites
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
         self.image = pg.Surface((TILESIZE, TILESIZE))
@@ -327,7 +328,7 @@ class ZeldaWall(pg.sprite.Sprite):
 
 class FakeWall(pg.sprite.Sprite):
     def __init__(self, game, x, y):
-        self.groups = game.all_sprites, game.fakewalls
+        self.groups = game.all_sprites, game.fakewalls, game.zelda_sprites
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
         self.image = pg.Surface((TILESIZE, TILESIZE))
@@ -350,7 +351,7 @@ class FakeWall(pg.sprite.Sprite):
 
 class ZeldaCoin(pg.sprite.Sprite):
     def __init__(self, game, x, y):
-        self.groups = game.all_sprites, game.coins
+        self.groups = game.all_sprites, game.coins, game.zelda_sprites
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
         self.image = pg.Surface((TILESIZE, TILESIZE))
@@ -364,7 +365,7 @@ class ZeldaCoin(pg.sprite.Sprite):
 
 class MarioCoin(pg.sprite.Sprite):
     def __init__(self, game, x, y):
-        self.groups = game.all_sprites, game.coins
+        self.groups = game.all_sprites, game.coins, game.mario_sprites
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
         self.image = pg.Surface((TILESIZE, TILESIZE))
@@ -379,7 +380,7 @@ class MarioCoin(pg.sprite.Sprite):
 
 class MarioWall(pg.sprite.Sprite):
     def __init__(self, game, x, y):
-        self.groups = game.all_sprites, game.walls
+        self.groups = game.all_sprites, game.walls, game.mario_sprites
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
         self.image = pg.Surface((TILESIZE, TILESIZE))
@@ -403,7 +404,7 @@ class MarioWall(pg.sprite.Sprite):
 
 class FakeWall2(pg.sprite.Sprite):
     def __init__(self, game, x, y):
-        self.groups = game.all_sprites, game.fakewalls
+        self.groups = game.all_sprites, game.fakewalls, game.mario_sprites
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
         self.image = pg.Surface((TILESIZE, TILESIZE))
