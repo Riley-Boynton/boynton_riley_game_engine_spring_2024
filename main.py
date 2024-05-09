@@ -220,12 +220,62 @@ class Game:
         
         if self.timefreezelink == True:
             self.zelda_sprites.update()
-            self.draw_text2(self.screen, "Freeze! Don't try to move!", 24, BLACK, WIDTH/2, 90)
-            self.draw_text2(self.screen, "or else you'll die...", 12, BLACK, WIDTH/2, 90)
+            #                                pasted from CHATGPT
+            font = pg.font.Font(None, 36)
+            text_surface1 = font.render("Freeze!", True, YELLOW)
+            text_rect1 = text_surface1.get_rect(center=(WIDTH/2 + 193, 350))
+            font = pg.font.Font(None, 24)  # Choose your font and size
+            text_surface2 = font.render("Don't try to move!", True, YELLOW)
+            text_rect2 = text_surface2.get_rect(center=(WIDTH/2 + 193, 375))
+            font = pg.font.Font(None, 24)  # Choose your font and size
+            text_surface3 = font.render("(or else you'll die...)", True, YELLOW)
+            text_rect3 = text_surface3.get_rect(center=(WIDTH/2 + 193, 400))
+            self.screen.blit(text_surface1, text_rect1)
+            self.screen.blit(text_surface2, text_rect2)
+            self.screen.blit(text_surface3, text_rect3)
+            font = pg.font.Font(None, 36)
+            text_surface4 = font.render("Freeze!", True, RED)
+            text_rect4 = text_surface4.get_rect(center=(WIDTH/2 -350, 350))
+            font = pg.font.Font(None, 24)  # Choose your font and size
+            text_surface5 = font.render("Don't try to move!", True, RED)
+            text_rect5 = text_surface5.get_rect(center=(WIDTH/2 -350, 375))
+            font = pg.font.Font(None, 24)  # Choose your font and size
+            text_surface6 = font.render("(or else you'll die...)", True, RED)
+            text_rect6 = text_surface6.get_rect(center=(WIDTH/2 -350, 400))
+            self.screen.blit(text_surface4, text_rect4)
+            self.screen.blit(text_surface5, text_rect5)
+            self.screen.blit(text_surface6, text_rect6)
+            pg.display.flip()
             pg.time.wait(5000)
             self.timefreezelink = False
+        
         elif self.timefreezemario == True:
-            self.mario_sprites.update()
+            #                                  also pasted from CHATGPT
+            font = pg.font.Font(None, 36)
+            text_surface1 = font.render("Freeze!", True, YELLOW)
+            text_rect1 = text_surface1.get_rect(center=(WIDTH/2 + 193, 350))
+            font = pg.font.Font(None, 24)  # Choose your font and size
+            text_surface2 = font.render("Don't try to move!", True, YELLOW)
+            text_rect2 = text_surface2.get_rect(center=(WIDTH/2 + 193, 375))
+            font = pg.font.Font(None, 24)  # Choose your font and size
+            text_surface3 = font.render("(or else you'll die...)", True, YELLOW)
+            text_rect3 = text_surface3.get_rect(center=(WIDTH/2 + 193, 400))
+            self.screen.blit(text_surface1, text_rect1)
+            self.screen.blit(text_surface2, text_rect2)
+            self.screen.blit(text_surface3, text_rect3)
+            font = pg.font.Font(None, 36)
+            text_surface4 = font.render("Freeze!", True, RED)
+            text_rect4 = text_surface4.get_rect(center=(WIDTH/2 -350, 350))
+            font = pg.font.Font(None, 24)  # Choose your font and size
+            text_surface5 = font.render("Don't try to move!", True, RED)
+            text_rect5 = text_surface5.get_rect(center=(WIDTH/2 -350, 375))
+            font = pg.font.Font(None, 24)  # Choose your font and size
+            text_surface6 = font.render("(or else you'll die...)", True, RED)
+            text_rect6 = text_surface6.get_rect(center=(WIDTH/2 -350, 400))
+            self.screen.blit(text_surface4, text_rect4)
+            self.screen.blit(text_surface5, text_rect5)
+            self.screen.blit(text_surface6, text_rect6)
+            pg.display.flip()
             pg.time.wait(5000)
             self.timefreezemario = False
         else:
