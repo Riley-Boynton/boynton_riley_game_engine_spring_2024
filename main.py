@@ -33,7 +33,7 @@ random background music -- did this... maybe I should do more
 NEW FINAL GOALS (more difficult)
 alright I've got another one: freezing the opposing player with an item
 1. make the item invisible
-2. display onscreen: you froze your enemy!
+2. display onscreen: you froze your enemy(and yourself)
 3. also have new frozen sounding sounds when someone is frozen
 4. make freezing last for 5 seconds
 5. 2 freeze items per side
@@ -67,6 +67,7 @@ class Game:
         self.running = True
         # later on we'll story game info with this
         self.load_data()
+        font = pg.font.Font(None, 36)
         self.elapsed_time = 0
         self.max_time = 5000  # 5 seconds in milliseconds
         self.update_time = 0  # Track when the sprites were last updated
@@ -219,6 +220,8 @@ class Game:
         
         if self.timefreezelink == True:
             self.zelda_sprites.update()
+            self.draw_text2(self.screen, "Freeze! Don't try to move!", 24, BLACK, WIDTH/2, 90)
+            self.draw_text2(self.screen, "or else you'll die...", 12, BLACK, WIDTH/2, 90)
             pg.time.wait(5000)
             self.timefreezelink = False
         elif self.timefreezemario == True:
@@ -253,6 +256,15 @@ class Game:
             # the grid is invisible
 
     def draw_text(self, surface, text, size, color, x, y):
+        font_name = pg.font.match_font('times new roman')
+        # idk why I like times new roman
+        font = pg.font.Font(font_name, size)
+        text_surface = font.render(text, True, color)
+        text_rect = text_surface.get_rect()
+        text_rect.midtop = (x,y)
+        surface.blit(text_surface, text_rect)
+    
+    def draw_text2(self, surface, text, size, color, x, y):
         font_name = pg.font.match_font('times new roman')
         # idk why I like times new roman
         font = pg.font.Font(font_name, size)

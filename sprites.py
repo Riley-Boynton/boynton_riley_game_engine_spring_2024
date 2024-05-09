@@ -135,6 +135,8 @@ class PlayerLink(pg.sprite.Sprite):
                 zeldacoin_sound.play()  
             if str(hits[0].__class__.__name__) == "FreezeItem":
                 self.game.timefreezelink = True
+                freeze_sound = pg.mixer.Sound("freezesound.mp3")
+                freeze_sound.play()
     # old motion
     # def move(self, dx=0, dy=0):
     #     self.x += dx
@@ -272,6 +274,8 @@ class PlayerMario(pg.sprite.Sprite):
                 coin_sound.play()
             if str(hits[0].__class__.__name__) == "FreezeItem":
                 self.game.timefreezemario = True
+                freeze_sound = pg.mixer.Sound("freezesound.mp3")
+                freeze_sound.play()
     # old motion
     # def move(self, dx=0, dy=0):
     #     self.x += dx
@@ -546,7 +550,7 @@ class FreezeItem(pg.sprite.Sprite):
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
         self.image = pg.Surface((TILESIZE, TILESIZE))
-        self.image.fill(RED)
+        self.image.fill(BGCOLOR)
         self.rect = self.image.get_rect()
         self.x = x
         self.y = y
