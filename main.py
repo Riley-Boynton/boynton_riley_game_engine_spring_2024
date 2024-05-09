@@ -77,6 +77,7 @@ class Game:
         #                                  pasted from CHATGPT
         self.timefreezelink = False
         self.timefreezemario = False
+
     def load_data(self):
         game_folder = path.dirname(__file__)
         img_folder = path.join(game_folder, 'images')
@@ -97,7 +98,6 @@ class Game:
         self.goomba_img = pg.image.load(path.join(img_folder, 'goomba.png')).convert_alpha()
         self.map_data = []
         # did a lot of different images
-    
         '''
         The with statement is a context manager in Python. 
         It is used to ensure that a resource is properly closed or released 
@@ -107,27 +107,12 @@ class Game:
             for line in f:
                 print(line)
                 self.map_data.append(line)
-    # def load_data(self):
-    #     game_folder = path.dirname(__file__)
-    #     self.map_data = []
-    #     '''
-    #     The with statement is a context manager in Python. 
-    #     It is used to ensure that a resource is properly closed or released 
-    #     after it is used. This can help to prevent errors and leaks.
-    #     '''
-    #     with open(path.join(game_folder, 'map.txt'), 'rt') as f:
-    #         for line in f:
-    #             print(line)
-    #             self.map_data.append(line)
-    #             print(self.map_data)
+    
     def new(self):
-        # pg.mixer.music.load(path.join(self.snd_folder, 'latesummerrun.mp3'))
         soundtracks = os.listdir(self.snd_folder)
         chosen_soundtrack = random.choice(soundtracks)
         pg.mixer.music.load(os.path.join(self.snd_folder, chosen_soundtrack))
-        # this music I downloaded but added my own sounds
-        # the "mmmmmmm" was my voice
-        # this is from a podcast "Chasing Scratch"
+        # there are now 12 random soundtracks!
         self.all_sprites = pg.sprite.Group()
         self.walls = pg.sprite.Group()
         self.coins = pg.sprite.Group()
@@ -137,10 +122,6 @@ class Game:
         self.freezes = pg.sprite.Group()
         self.zelda_sprites = pg.sprite.Group()
         self.mario_sprites = pg.sprite.Group()
-        # self.player = Player(self, 10, 10)
-        # self.all_sprites.add(self.player)
-        # for x in range(10, 20):
-        #     Wall(self, x, 5)
         for row, tiles in enumerate(self.map_data):
             print(row)
             for col, tile in enumerate(tiles):
@@ -168,9 +149,6 @@ class Game:
                 if tile == 'C':
                     print("a mario coin at", row, col)
                     MarioCoin(self, col, row)
-                if tile == 'g':
-                    print("a goomba at", row, col)
-                    Mob(self, col, row)
                 if tile == 'f':
                     FreezeItem (self, col, row)
 
@@ -192,35 +170,19 @@ class Game:
     def quit(self):
         pg.quit()
         sys.exit()
-    # methods
+        # methods
+    
     def input(self): 
         pass
+
     def update(self):
-        # if self.timefreezelink == False: 
-        #     self.all_sprites.update()
-        # if self.timefreezemario == False:
-        #     self.all_sprites.update()
         if self.playerlink.moneybag == 0:
             self.playing = False
         if self.playermario.moneybag == 0:
             self.playing = False
-        # if self.timefreezelink:
-        #     if pg.time.get_ticks() - self.update_time >= self.update_interval:
-        #         self.zelda_sprites.update()
-        #         print("Mario is frozen!")
-        # elif self.timefreezemario:
-        #     if pg.time.get_ticks() - self.update_time >= self.update_interval:
-        #         self.mario_sprites.update()
-        #         print("Link is frozen!")
-        # else:
-        #     if pg.time.get_ticks() - self.update_time >= self.update_interval:
-        #         self.all_sprites.update()
-        #                                        pasted from CHATGPT
-
-        
         if self.timefreezelink == True:
             self.zelda_sprites.update()
-            #                                pasted from CHATGPT
+            #                                modified from CHATGPT
             font = pg.font.Font(None, 36)
             text_surface1 = font.render("Freeze!", True, YELLOW)
             text_rect1 = text_surface1.get_rect(center=(WIDTH/2 + 193, 350))
@@ -250,7 +212,7 @@ class Game:
             self.timefreezelink = False
         
         elif self.timefreezemario == True:
-            #                                  also pasted from CHATGPT
+            #                                  also modified from CHATGPT
             font = pg.font.Font(None, 36)
             text_surface1 = font.render("Freeze!", True, YELLOW)
             text_rect1 = text_surface1.get_rect(center=(WIDTH/2 + 193, 350))
@@ -282,22 +244,10 @@ class Game:
             self.all_sprites.update()
 
     def freeze_timer(self):
-        # This function will run in a separate thread
         pg.time.wait(5000)  # Wait for 5 seconds
         self.timefreezelink = True
-        self.timefreezemario = False
-
-        # if self.timefreezelink == True:
-        #     self.zelda_sprites.update()
-        # elif self.timefreezemario == True:
-        #     self.mario_sprites.update()
-        # else:
-        #     self.all_sprites.update()
-        # if self.playing == False:
-        #     self.all_sprites.update() 
+        self.timefreezemario = False      
         
-        
-    
     def draw_grid(self):
         for x in range(0, WIDTH, TILESIZE):
             pg.draw.line(self.screen, LIGHTGREY, (x, 0), (x, HEIGHT))
@@ -340,19 +290,7 @@ class Game:
                 if event.type == pg.QUIT:
                     self.quit()
                     print("the game has ended..")
-                # keyboard events
-                # if event.type == pg.KEYDOWN:
-                #     if event.key == pg.K_LEFT:
-                #         self.player.move(dx=-1)
-                # if event.type == pg.KEYDOWN:
-                #     if event.key == pg.K_RIGHT:
-                #         self.player.move(dx=1)
-                # if event.type == pg.KEYDOWN:
-                #     if event.key == pg.K_UP:
-                #         self.player.move(dy=-1)
-                # if event.type == pg.KEYDOWN:
-                #     if event.key == pg.K_DOWN:
-                #         self.player.move(dy=1)
+
     def show_start_screen(self):
         self.screen.fill(BGCOLOR)
         self.draw_text(self.screen, "MARIO VS LINK", 96, BLACK, WIDTH/2, 90)
@@ -384,7 +322,8 @@ class Game:
                     self.quit()
                 if event.type == pg.KEYUP:
                     waiting = False
-####################### Instantiate game... ###################
+#                                   Instantiate game... 
+
 g = Game()
 g.show_start_screen()
 while True:

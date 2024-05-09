@@ -1,5 +1,6 @@
 # This file was created by: Riley Boynton
 # Appreciation to Chris Bradfield
+# Also to Mr. Cozort
 import pygame as pg
 from settings import *
 from utils import *
@@ -23,7 +24,6 @@ class Spritesheet:
         # grab an image out of a larger spritesheet
         image = pg.Surface((width, height))
         image.blit(self.spritesheet, (0, 0), (x, y, width, height))
-        # image = pg.transform.scale(image, (width, height))
         image = pg.transform.scale(image, (width * 1, height * 1))
         return image
        
@@ -81,12 +81,6 @@ class PlayerLink(pg.sprite.Sprite):
             self.vy = -PLAYER_SPEED * TILESIZE
         if keys[pg.K_DOWN]:
             self.vy = PLAYER_SPEED * TILESIZE
-        # if keys[pg.K_RSHIFT]:
-        #     self.pew
-    def pew(self):
-        p = PewPew(self.game, self.rect.x, self.rect.y)
-        print(p.rect.x)
-        print(p.rect.y)
             
     def collide_with_walls(self, dir):
         if dir == 'x':
@@ -222,10 +216,6 @@ class PlayerMario(pg.sprite.Sprite):
             self.vy = PLAYER_SPEED * TILESIZE
         # if keys[pg.K_e]:
         #     self.pew()
-    def pew(self):
-        p = PewPew(self.game, self.rect.x, self.rect.y)
-        print(p.rect.x)
-        print(p.rect.y)
             
     def collide_with_walls(self, dir):
         if dir == 'x':
@@ -429,121 +419,6 @@ class FakeWall2(pg.sprite.Sprite):
         # if self.rect.y > HEIGHT or self.rect.y < 0:
         #     self.speed *= -1
 
-class PewPew(pg.sprite.Sprite):
-    def __init__(self, game, x, y):
-        self.groups = game.all_sprites, game.pew_pews
-        pg.sprite.Sprite.__init__(self, self.groups)
-        self.game = game
-        self.image = pg.Surface((TILESIZE/4, TILESIZE/4))
-        self.image.fill(YELLOW)
-        self.rect = self.image.get_rect()
-        self.dir = [1, 1]
-        self.PlayerMario = PlayerMario(game, x, y) 
-        self.x = x
-        self.y = y
-        self.rect.x = x
-        self.rect.y = y
-        self.speed = 10
-        print("I created a pew pew...")
-    def collide_with_group(self, group, kill):
-        hits = pg.sprite.spritecollide(self, group, kill)
-        if hits:
-            if str(hits[0].__class__.__name__) == "MarioCoin":
-                self.PlayerMario.moneybag -= 1  
-    def update(self):
-        self.collide_with_group(self.game.coins, True)
-        self.rect.x += self.dir[0]*self.speed
-        self.rect.y += self.dir[1]*self.speed
-    def collide_with_walls(self, dir):
-        if dir == 'x':
-            hits = pg.sprite.spritecollide(self, self.game.walls, False )
-            if hits:
-                if self.vx > 0:
-                    self.x = hits[0].rect.left - self.rect.width
-                if self.vx < 0:
-                    self.x = hits[0].rect.right
-                self.vx = 0
-                self.rect.x = self.x
-        if dir == 'y':
-            hits = pg.sprite.spritecollide(self, self.game.walls, False )
-            if hits:
-                if self.vy > 0:
-                    self.y = hits[0].rect.top - self.rect.height
-                if self.vy < 0:
-                    self.y = hits[0].rect.bottom
-                self.vy = 0
-                self.rect.y = self.y
-
-class Mob(pg.sprite.Sprite):
-    def __init__(self, game, x, y):
-        self.groups = game.all_sprites, game.mobs
-        pg.sprite.Sprite.__init__(self, self.groups)
-        self.game = game
-        self.image = pg.Surface((TILESIZE, TILESIZE))
-        # self.image.fill(RED)
-        self.image = self.game.goomba_img
-        self.rect = self.image.get_rect()
-        self.x = x
-        self.y = y
-        self.vx, self.vy = 100, 100
-        self.x = x * TILESIZE
-        self.y = y * TILESIZE
-        self.speed = randint(1,3)
-        self.hitpoints = 5
-        print("created mob at", self.rect.x, self.rect.y)
-    def collide_with_walls(self, dir):
-        if dir == 'x':
-            # print('colliding on the x')
-            hits = pg.sprite.spritecollide(self, self.game.walls, False)
-            if hits:
-                self.vx *= -1
-                self.rect.x = self.x
-        if dir == 'y':
-            # print('colliding on the y')
-            hits = pg.sprite.spritecollide(self, self.game.walls, False)
-            if hits:
-                self.vy *= -1
-                self.rect.y = self.y
-    def chasing(self):
-        if self.rect.x < self.game.playermario.rect.x:
-            self.vx = 100
-        if self.rect.x > self.game.playermario.rect.x:
-            self.vx = -100    
-        if self.rect.y < self.game.playermario.rect.y:
-            self.vy = 100
-        if self.rect.y > self.game.playermario.rect.y:
-            self.vy = -100
-    def update(self):
-        if self.hitpoints < 1:
-            self.kill()
-        # self.image.blit(self.game.screen, self.pic)
-        # pass
-        # # self.rect.x += 1
-        self.chasing()
-        self.x += self.vx * self.game.dt
-        self.y += self.vy * self.game.dt
-        self.rect.x = self.x
-        self.collide_with_walls('x')
-        self.rect.y = self.y
-        self.collide_with_walls('y')
-
-# class FreezeItem:
-#     def __init__(self, game, x, y):
-#         self.groups = game.all_sprites, game.freezes
-#         pg.sprite.Sprite.__init__(self, self.groups)
-#         self.game = game
-#         self.image = pg.Surface((TILESIZE, TILESIZE))
-#         # self.image.fill(RED)
-#         self.image = pg.Surface((WIDTH, HEIGHT))
-#         self.image.fill(YELLOW)
-#         self.duration = 5  # Duration of freezing effect
-#         self.x = x
-#         self.y = y
-#         self.duration = 5
-#         self.vx, self.vy = 100, 100
-#         self.x = x * TILESIZE
-#         self.y = y * TILESIZE
-
 class FreezeItem(pg.sprite.Sprite):
     def __init__(self, game, x, y):
         self.groups = game.all_sprites, game.freezes
@@ -557,45 +432,3 @@ class FreezeItem(pg.sprite.Sprite):
         self.rect.x = x * TILESIZE
         self.rect.y = y * TILESIZE
         self.speed = 0
-
-# class FreezeItem(pg.sprite.Sprite):
-#     def __init__(self, game, x, y):
-#         self.groups = game.all_sprites, game.freezes
-#         pg.sprite.Sprite.__init__(self, self.groups)
-#         self.game = game
-#         self.image = pg.Surface((TILESIZE, TILESIZE))
-#         self.image.fill(GOLD)
-#         self.rect = self.image.get_rect()
-#         self.x = x
-#         self.y = y
-#         self.x = x * TILESIZE
-#         self.y = y * TILESIZE
-    
-
-# class FreezeItem:
-#     def __init__(self, game, name, x, y, duration):
-#         self.groups = game.all_sprites, game.items
-#         pg.sprite.Sprite.__init__(self, self.groups)
-#         self.game = game
-#         self.image = pg.Surface((TILESIZE, TILESIZE))
-#         # self.image.fill(RED)
-#         self.image = pg.Surface((WIDTH, HEIGHT))
-#         self.name = name
-#         self.image.fill(YELLOW)
-#         self.duration = duration  # Assigning the duration argument
-#         self.x = x * TILESIZE  # Calculating the pixel position from tile position
-#         self.y = y * TILESIZE  # Calculating the pixel position from tile position
-#         self.vx, self.vy = 100, 100
-
-# # Outside of the class, create the freeze item
-# def create_freeze_item(game, name, x, y, duration):
-#     freeze_item = FreezeItem(game, name, x, y, duration)
-#     return freeze_item
-
-# def apply_freeze_effect(self, PlayerLink):
-#         PlayerLink.frozen = True
-#         print(f"{PlayerLink.name} is frozen by {PlayerMario.name} for {self.duration} seconds.")
-
-# def apply_freeze_effect(self, PlayerMario):
-#         PlayerMario.frozen = True
-#         print(f"{PlayerMario.name} is frozen by {PlayerLink.name} for {self.duration} seconds.")
