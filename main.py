@@ -1,16 +1,18 @@
 # This file was created by: Riley
 # Riley's's edits will appear shortly...
 # Riley is the best
-######THANK YOU SO MUCH NINTENDO I USED ALL YOUR STUFF######
-######I ALSO USED A LOT OF MR. COZORT'S CODE THANKS FOR THAT######
 
-
-                                # THANK YOU CHAT GPT
+'''
+Sources:
+Nintendo (for the pictures and some sounds)
+YouTube (for the rest of the sounds)
+Mr. Cozort (for the base code and some add-ons)
+Chat GPT (where mentioned)
+''' 
 
 '''
 goals, rules, feedback, freedom, what the verb, and will it form a sentence
 '''
-
 
 '''
 ALPHA GOALS
@@ -29,14 +31,15 @@ sound effects for collecting coins
 FINAL GOALS
 have more music soundtracks -- I got 9 sounds...
 random background music -- did this... maybe I should do more
+'''
 
+'''
 NEW FINAL GOALS (more difficult)
 alright I've got another one: freezing the opposing player with an item
 1. make the item invisible
-2. display onscreen: you froze your enemy(and yourself)
+2. display onscreen: you froze your enemy (and yourself)
 3. also have new frozen sounding sounds when someone is frozen
 4. make freezing last for 5 seconds
-5. 2 freeze items per side
 '''
 
 
@@ -70,8 +73,6 @@ class Game:
         font = pg.font.Font(None, 36)
         self.elapsed_time = 0
         self.max_time = 5000  # 5 seconds in milliseconds
-        self.update_time = 0  # Track when the sprites were last updated
-        self.update_interval = 1000  # Update interval for sprites in milliseconds
         self.time_freeze_duration = 5000  # 5 seconds in milliseconds
         self.time_freeze_start_time = pg.time.get_ticks()
         #                                  pasted from CHATGPT
@@ -85,7 +86,7 @@ class Game:
         # Idk why I had to add "self"
         self.player_img = pg.image.load(path.join(img_folder, 'animatedlink.png')).convert_alpha()
         self.map_data = []
-        self.player_img2 = pg.image.load(path.join(img_folder, 'animatedmario.png')).convert_alpha()
+        self.player_img2 = pg.image.load(path.join(img_folder, 'superanimatedmario.png')).convert_alpha()
         self.map_data = []
         self.coin_img = pg.image.load(path.join(img_folder, 'zeldacoin.png')).convert_alpha()
         self.map_data = []
@@ -145,7 +146,7 @@ class Game:
                     # puts the player on a specific point on the screen
                 if tile == 'c':
                     print("a zelda coin at", row, col)
-                    ZeldaCoin(self, col, row)    
+                    ZeldaCoin(self, col, row)
                 if tile == 'C':
                     print("a mario coin at", row, col)
                     MarioCoin(self, col, row)
@@ -159,7 +160,7 @@ class Game:
         pg.mixer.music.play(loops=-1)
         self.playing = True
         while self.playing:
-            self.dt = self.clock.tick(FPS) / 1000
+            self.dt = self.clock.tick(FPS) / 1000 
             # this is input
             self.events()
             # this is processing
@@ -181,8 +182,8 @@ class Game:
         if self.playermario.moneybag == 0:
             self.playing = False
         if self.timefreezelink == True:
-            self.zelda_sprites.update()
-            #                                modified from CHATGPT
+            # for when Link freezes the screen
+            # modified from CHATGPT
             font = pg.font.Font(None, 36)
             text_surface1 = font.render("Freeze!", True, YELLOW)
             text_rect1 = text_surface1.get_rect(center=(WIDTH/2 + 193, 350))
@@ -207,12 +208,19 @@ class Game:
             self.screen.blit(text_surface4, text_rect4)
             self.screen.blit(text_surface5, text_rect5)
             self.screen.blit(text_surface6, text_rect6)
+            self.playermario.image = pg.image.load("frozenmario.png")
+            self.playerlink.image = pg.image.load("frozenlink.png")
             pg.display.flip()
             pg.time.wait(5000)
             self.timefreezelink = False
         
         elif self.timefreezemario == True:
-            #                                  also modified from CHATGPT
+            # for when Mario freezes the screen
+            # two freezes isn't efficient, but it works
+            self.playermario.image = pg.image.load("frozenmario.png").convert_alpha()
+            self.playerlink.image = pg.image.load("frozenlink.png").convert_alpha()
+            # also modified from  CHATGPT
+            # for the text
             font = pg.font.Font(None, 36)
             text_surface1 = font.render("Freeze!", True, YELLOW)
             text_rect1 = text_surface1.get_rect(center=(WIDTH/2 + 193, 350))
@@ -293,13 +301,14 @@ class Game:
 
     def show_start_screen(self):
         self.screen.fill(BGCOLOR)
-        self.draw_text(self.screen, "MARIO VS LINK", 96, BLACK, WIDTH/2, 90)
-        self.draw_text(self.screen, "Mario: use WASD to move", 48, RED, WIDTH/2, 210)
-        self.draw_text(self.screen, "Link: use arrows to move", 48, YELLOW, WIDTH/2, 260)
-        self.draw_text(self.screen, "The goal is to collect all the coins the fastest", 36, BLACK, WIDTH/2, 325)
-        self.draw_text(self.screen, "Whoever gets to zero (0) coins the fastest wins", 36, BLACK, WIDTH/2, 360)
-        self.draw_text(self.screen, "There are seven (7) coins in total", 36, BLACK, WIDTH/2, 360 + 35)
-        self.draw_text(self.screen, "PRESS ANY KEY TO BEGIN", 72, BLACK, WIDTH/2, 410 + 35)
+        self.draw_text(self.screen, "MARIO VS LINK", 96, BLACK, WIDTH/2, 90-30)
+        self.draw_text(self.screen, "Mario: use WASD to move", 48, RED, WIDTH/2, 210-30)
+        self.draw_text(self.screen, "Link: use arrows to move", 48, YELLOW, WIDTH/2, 260-30)
+        self.draw_text(self.screen, "The goal is to collect all the coins the fastest", 36, BLACK, WIDTH/2, 325-30)
+        self.draw_text(self.screen, "Whoever gets to zero (0) coins the fastest wins", 36, BLACK, WIDTH/2, 360-30)
+        self.draw_text(self.screen, "There are seven (7) coins in total", 36, BLACK, WIDTH/2, 360 + 35-30)
+        self.draw_text(self.screen, "Be sure to avoid the freezes!", 36, BLACK, WIDTH/2, 360 + 70-30)
+        self.draw_text(self.screen, "PRESS ANY KEY TO BEGIN", 72, BLACK, WIDTH/2, 410 + 70-30)
         pg.display.flip()
         self.wait_for_key()
         # I think the start screen took the longest

@@ -170,7 +170,7 @@ class PlayerMario(pg.sprite.Sprite):
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
         self.image = pg.Surface((TILESIZE, TILESIZE))
-        self.spritesheet = Spritesheet(path.join(img_folder, 'animatedmario.png'))
+        self.spritesheet = Spritesheet(path.join(img_folder, 'superanimatedmario.png'))
         self.load_images()
         # self.image.fill(GREEN)
         self.image = self.standing_frames[0]
@@ -190,17 +190,23 @@ class PlayerMario(pg.sprite.Sprite):
         self.walking = False
 
     def load_images(self):
-        self.standing_frames = [self.spritesheet.get_image(0,0, 32, 32), 
-                                self.spritesheet.get_image(32,0, 32, 32)]
+        self.standing_frames = [
+                                self.spritesheet.get_image(0,0, 32, 32), 
+                                self.spritesheet.get_image(32,0, 32, 32),
+                                self.spritesheet.get_image(64,0, 32, 32),
+                                self.spritesheet.get_image(96,0, 32, 32),
+                                self.spritesheet.get_image(128,0, 32, 32),
+                                self.spritesheet.get_image(160,0, 32, 32),
+                                self.spritesheet.get_image(192,0, 32, 32),
+                                self.spritesheet.get_image(224,0, 32, 32)]
      
     def animate(self):
         now = pg.time.get_ticks()
-        if now - self.last_update > 350:
+        if now - self.last_update > 150:
             self.last_update = now
             self.current_frame = (self.current_frame + 1) % len(self.standing_frames)
             bottom = self.rect.bottom
             self.image = self.standing_frames[self.current_frame]
-            self.rect = self.image.get_rect()
             self.rect.bottom = bottom
 
     def get_keys(self):
@@ -270,15 +276,7 @@ class PlayerMario(pg.sprite.Sprite):
     # def move(self, dx=0, dy=0):
     #     self.x += dx
     #     self.y += dy
-    def animate(self):
-        now = pg.time.get_ticks()
-        if now - self.last_update > 350:
-            self.last_update = now
-            self.current_frame = (self.current_frame + 1) % len(self.standing_frames)
-            bottom = self.rect.bottom
-            self.image = self.standing_frames[self.current_frame]
-            self.rect = self.image.get_rect()
-            self.rect.bottom = bottom
+
 
     # UPDATE THE UPDATE
     def update(self):
